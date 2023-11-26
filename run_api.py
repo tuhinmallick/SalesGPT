@@ -29,8 +29,7 @@ async def chat_with_sales_agent(req: MessageList):
         config_path="examples/example_agent_setup.json", verbose=True
     )
     name, reply = sales_api.do(req.conversation_history, req.human_say)
-    res = {"name": name, "say": reply}
-    return res
+    return {"name": name, "say": reply}
 
 
 def _set_env():

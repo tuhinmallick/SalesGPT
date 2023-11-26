@@ -40,32 +40,19 @@ class SalesConversationChain(LLMChain):
         """Get the response parser."""
         if use_custom_prompt:
             sales_agent_inception_prompt = custom_prompt
-            prompt = PromptTemplate(
-                template=sales_agent_inception_prompt,
-                input_variables=[
-                    "salesperson_name",
-                    "salesperson_role",
-                    "company_name",
-                    "company_business",
-                    "company_values",
-                    "conversation_purpose",
-                    "conversation_type",
-                    "conversation_history",
-                ],
-            )
         else:
             sales_agent_inception_prompt = SALES_AGENT_INCEPTION_PROMPT
-            prompt = PromptTemplate(
-                template=sales_agent_inception_prompt,
-                input_variables=[
-                    "salesperson_name",
-                    "salesperson_role",
-                    "company_name",
-                    "company_business",
-                    "company_values",
-                    "conversation_purpose",
-                    "conversation_type",
-                    "conversation_history",
-                ],
-            )
+        prompt = PromptTemplate(
+            template=sales_agent_inception_prompt,
+            input_variables=[
+                "salesperson_name",
+                "salesperson_role",
+                "company_name",
+                "company_business",
+                "company_values",
+                "conversation_purpose",
+                "conversation_type",
+                "conversation_history",
+            ],
+        )
         return cls(prompt=prompt, llm=llm, verbose=verbose)

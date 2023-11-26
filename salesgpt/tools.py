@@ -23,20 +23,16 @@ def setup_knowledge_base(product_catalog: str = None):
         texts, embeddings, collection_name="product-knowledge-base"
     )
 
-    knowledge_base = RetrievalQA.from_chain_type(
+    return RetrievalQA.from_chain_type(
         llm=llm, chain_type="stuff", retriever=docsearch.as_retriever()
     )
-    return knowledge_base
 
 
 def get_tools(knowledge_base):
-    # we only use one tool for now, but this is highly extensible!
-    tools = [
+    return [
         Tool(
             name="ProductSearch",
             func=knowledge_base.run,
             description="useful for when you need to answer questions about product information",
         )
     ]
-
-    return tools

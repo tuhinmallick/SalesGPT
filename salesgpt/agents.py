@@ -78,7 +78,7 @@ class SalesGPT(Chain):
             conversation_stage_id=self.conversation_stage_id,
             conversation_stages="\n".join(
                 [
-                    str(key) + ": " + str(value)
+                    f"{str(key)}: {str(value)}"
                     for key, value in CONVERSATION_STAGES.items()
                 ]
             ),
@@ -93,7 +93,7 @@ class SalesGPT(Chain):
 
     def human_step(self, human_input):
         # process human input
-        human_input = "User: " + human_input + " <END_OF_TURN>"
+        human_input = f"User: {human_input} <END_OF_TURN>"
         self.conversation_history.append(human_input)
 
     @time_logger
@@ -257,7 +257,7 @@ class SalesGPT(Chain):
 
         # Add agent's response to conversation history
         agent_name = self.salesperson_name
-        ai_message = agent_name + ": " + ai_message
+        ai_message = f"{agent_name}: {ai_message}"
         if "<END_OF_TURN>" not in ai_message:
             ai_message += " <END_OF_TURN>"
         self.conversation_history.append(ai_message)
@@ -269,10 +269,7 @@ class SalesGPT(Chain):
     def from_llm(cls, llm: ChatLiteLLM, verbose: bool = False, **kwargs) -> "SalesGPT":
         """Initialize the SalesGPT Controller."""
         stage_analyzer_chain = StageAnalyzerChain.from_llm(llm, verbose=verbose)
-        if (
-            "use_custom_prompt" in kwargs.keys()
-            and kwargs["use_custom_prompt"] == "True"
-        ):
+        if "use_custom_prompt" in kwargs and kwargs["use_custom_prompt"] == "True":
             use_custom_prompt = deepcopy(kwargs["use_custom_prompt"])
             custom_prompt = deepcopy(kwargs["custom_prompt"])
 
@@ -292,9 +289,7 @@ class SalesGPT(Chain):
                 llm, verbose=verbose
             )
 
-        if "use_tools" in kwargs.keys() and (
-            kwargs["use_tools"] == "True" or kwargs["use_tools"] == True
-        ):
+        if "use_tools" in kwargs and kwargs["use_tools"] in ["True", True]:
             # set up agent with tools
             product_catalog = kwargs["product_catalog"]
             knowledge_base = setup_knowledge_base(product_catalog)
